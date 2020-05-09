@@ -2,20 +2,23 @@ import m from 'mithril'
 import x from 'aes256'
 
 export default () => {
+  const decrypt = () => {
+    output.dom.value = x.decrypt(password.dom.value, encrypted)
+    output.dom.parentNode.classList.remove('hidden')
+    encryptAnother.dom.classList.remove('hidden')
+    output.dom.focus()
+  }
+
   let encrypted
 
   let password = m('input#password', {
     type: 'text',
-    onkeypress: (e) => e.key == 'Enter' ? decrypt() : null,
+    onkeypress: (e) => e.key == 'Enter' ? decrypt() : showMessage.dom.classList.remove('hidden'),
   })
   let payload = m('textarea#payload')
   let output = m('textarea#output')
-
-  const decrypt = () => {
-    output.dom.value = x.decrypt(password.dom.value, encrypted)
-    output.dom.parentNode.classList.remove('hidden')
-    output.dom.focus()
-  }
+  let encryptAnother = m('a.button.greenBg.whiteText.hidden', {href: window.location.href.split('#!')[0]}, 'Encrypt another Message')
+  let showMessage = m('a.button.blueBg.whiteText.hidden', { onclick: decrypt, }, 'Show Message')
 
   return {
     oncreate: () => {
@@ -28,15 +31,11 @@ export default () => {
         m('div.field',
           m('label', null, 'Password'), password,
         ),
-        m('div.field',
-          m('a.button.blueBg.whiteText', {
-            onclick: decrypt,
-          }, 'Show Message'),
-        ),
+        m('div.field', showMessage),
         m('div.field.hidden',
           m('label', null, 'Message'), output,
         ),
-        m('a.button.greenBg.whiteText', {href: '/secret/'}, 'Encrypt another Message'),
+        encryptAnother,
       ),
     ]),
   }
