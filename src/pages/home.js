@@ -3,39 +3,49 @@ import x from 'aes256'
 
 export default () => {
   let password = m('input#password', {
-    type: 'text'
+    type: 'text',
+    onkeypress: (e) => e.key == 'Enter' ? encrypt() : null,
   })
   let payload = m('textarea#payload')
   let output = m('textarea#output')
 
   const encrypt = () => {
-    debugger;
-    output.dom.value = x.encrypt(password.dom.value, payload.dom.value)
+    output.dom.value = window.location.href + '#!/decrypt/' + x.encrypt(password.dom.value, payload.dom.value)
+    output.dom.parentNode.classList.remove('hidden')
+    copyLink.dom.classList.remove('hidden')
   }
 
-  const decrypt = () => {
-    output.dom.value = x.decrypt(password.dom.value, payload.dom.value)
+  const copy = () => {
+    output.dom.select()
+    document.execCommand('copy')
+    copyLink.dom.innerText = '✓ Copied'
   }
+
+  let copyLink = m('a.button.blueBg.whiteText.hidden', {
+    onclick: copy
+  }, 'Copy Link')
+
   return {
+    oncreate: () => {
+      payload.dom.focus()
+    },
     view: () => ([
       m('div.container.center', null,
         m('div.field',
-          m('label', null, 'Password'), password,
+          m('label', null, 'Message'), payload,
         ),
         m('div.field',
-          m('label', null, 'Payload'), payload,
+          m('label', null, 'Create a Password'), password,
         ),
         m('div.field',
           m('a.button.greenBg.whiteText', {
             onclick: encrypt
           }, 'Encrypt'),
-          m('a.button.redBg.whiteText', {
-            onclick: decrypt
-          }, 'Decrypt'),
         ),
-        m('div.field',
-          m('label', null, 'Output'), output,
+        m('div.field.hidden',
+          m('label', null, 'Link'), output,
         ),
+        copyLink,
       ),
     ]),
   }
