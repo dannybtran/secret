@@ -3,7 +3,7 @@ import x from 'aes256'
 
 export default () => {
   const decrypt = () => {
-    output.dom.value = x.decrypt(password.dom.value, encrypted)
+    output.dom.value = x.decrypt(password.dom.value, atob(encrypted))
     output.dom.parentNode.classList.remove('hidden')
     encryptAnother.dom.classList.remove('hidden')
     output.dom.focus()
