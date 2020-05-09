@@ -10,7 +10,7 @@ export default () => {
   let output = m('textarea#output')
 
   const encrypt = () => {
-    output.dom.value = window.location.href + '#!/decrypt/' + x.encrypt(password.dom.value, payload.dom.value)
+    output.dom.value = window.location.href.split('#!')[0] + '#!/decrypt/' + x.encrypt(password.dom.value, payload.dom.value)
     output.dom.parentNode.classList.remove('hidden')
     copyLink.dom.classList.remove('hidden')
   }
