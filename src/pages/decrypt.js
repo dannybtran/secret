@@ -5,6 +5,8 @@ export default () => {
   const decrypt = () => {
     output.dom.value = x.decrypt(password.dom.value, atob(encrypted))
     output.dom.parentNode.classList.remove('hidden')
+    const href = window.location.href.split('#!')[0] + '#!/encrypt/' + btoa(password.dom.value)
+    encryptAnother.dom.href = href
     encryptAnother.dom.classList.remove('hidden')
     output.dom.focus()
   }
@@ -17,13 +19,12 @@ export default () => {
   })
   let payload = m('textarea#payload')
   let output = m('textarea#output')
-  let encryptAnother = m('a.button.greenBg.whiteText.hidden', {href: window.location.href.split('#!')[0]}, 'Encrypt another Message')
+  let encryptAnother = m('a.button.greenBg.whiteText.hidden', null, 'Encrypt another Message')
   let showMessage = m('a.button.blueBg.whiteText.hidden', { onclick: decrypt, }, 'Show Message')
 
   return {
     oncreate: () => {
       encrypted = m.route.param('encrypted')
-      window.password = password
       password.dom.focus()
     },
     view: () => ([

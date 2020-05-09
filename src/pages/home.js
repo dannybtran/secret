@@ -8,6 +8,8 @@ export default () => {
     copyLink.dom.classList.remove('hidden')
   }
 
+  let pw
+
   let password = m('input#password', {
     type: 'text',
     onkeypress: (e) => e.key == 'Enter' ? encrypt() : encryptMessage.dom.parentNode.classList.remove('hidden'),
@@ -31,6 +33,12 @@ export default () => {
 
   return {
     oncreate: () => {
+      pw = m.route.param('password')
+      if (pw) {
+        password.dom.value = atob(pw)
+        password.dom.parentNode.classList.remove('hidden')
+        encryptMessage.dom.parentNode.classList.remove('hidden')
+      }
       payload.dom.focus()
     },
     view: () => ([

@@ -4,8 +4,9 @@ import decrypt from './pages/decrypt'
 
 const route = () => {
   m.route(document.getElementById('app'), '/', {
-    '/': home,
+    '/encrypt/:password': home,
     '/decrypt/:encrypted': decrypt,
+    '/': home,
   })
 }
 
