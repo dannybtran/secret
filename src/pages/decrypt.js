@@ -36,7 +36,7 @@ export default () => {
         m('div.field.hidden',
           m('label', null, 'Message'), output,
         ),
-        m('a.button.greenBg.whiteText', {href: '/'}, 'Encrypt another Message'),
+        m('a.button.greenBg.whiteText', {href: '/secret/'}, 'Encrypt another Message'),
       ),
     ]),
   }
