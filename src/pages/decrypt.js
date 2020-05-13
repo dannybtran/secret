@@ -3,7 +3,11 @@ import x from 'aes256'
 
 export default () => {
   const decrypt = () => {
-    output.dom.innerText = x.decrypt(password.dom.value, atob(encrypted))
+    try {
+      output.dom.innerText = x.decrypt(password.dom.value, atob(encrypted))
+    } catch {
+      output.dom.innerText = "Invalid."
+    }
     output.dom.parentNode.classList.remove('hidden')
     const href = window.location.href.split('#!')[0] + '#!/encrypt/' + btoa(password.dom.value)
     encryptAnother.dom.href = href
