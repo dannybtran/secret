@@ -3,7 +3,7 @@ import x from 'aes256'
 
 export default () => {
   const encrypt = () => {
-    output.dom.value = window.location.href.split('#!')[0] + '#!/decrypt/' + btoa(x.encrypt(password.dom.value, payload.dom.value))
+    output.dom.innerText = window.location.href.split('#!')[0] + '#!/decrypt/' + btoa(x.encrypt(password.dom.value, payload.dom.innerText))
     output.dom.parentNode.classList.remove('hidden')
     copyLink.dom.classList.remove('hidden')
   }
@@ -14,15 +14,32 @@ export default () => {
     type: 'text',
     onkeypress: (e) => e.key == 'Enter' ? encrypt() : encryptMessage.dom.parentNode.classList.remove('hidden'),
   })
-  let payload = m('textarea#payload', {
+  let payload = m('div#payload', {
+    tabIndex: 1,
+    contentEditable: true,
     onkeypress: (e) => password.dom.parentNode.classList.remove('hidden'),
   })
-  let output = m('textarea#output')
+  let output = m('div#output', {
+    contentEditable: true,
+    tabIndex: 1,
+  })
 
   let encryptMessage = m('a.button.greenBg.whiteText', { onclick: encrypt }, 'Encrypt')
 
   const copy = () => {
-    output.dom.select()
+    var cell = output.dom;
+    var range, selection;
+    if (document.body.createTextRange) {
+      range = document.body.createTextRange();
+      range.moveToElementText(cell);
+      range.select();
+    } else if (window.getSelection) {
+      selection = window.getSelection();
+      range = document.createRange();
+      range.selectNodeContents(cell);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
     document.execCommand('copy')
     copyLink.dom.innerText = '✓ Copied'
   }

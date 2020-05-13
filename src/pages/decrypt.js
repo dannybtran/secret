@@ -3,7 +3,7 @@ import x from 'aes256'
 
 export default () => {
   const decrypt = () => {
-    output.dom.value = x.decrypt(password.dom.value, atob(encrypted))
+    output.dom.innerText = x.decrypt(password.dom.value, atob(encrypted))
     output.dom.parentNode.classList.remove('hidden')
     const href = window.location.href.split('#!')[0] + '#!/encrypt/' + btoa(password.dom.value)
     encryptAnother.dom.href = href
@@ -17,8 +17,8 @@ export default () => {
     type: 'text',
     onkeypress: (e) => e.key == 'Enter' ? decrypt() : showMessage.dom.classList.remove('hidden'),
   })
-  let payload = m('textarea#payload')
-  let output = m('textarea#output')
+  let payload = m('div#payload', {contentEditable: true})
+  let output = m('div#output', {contentEditable: true})
   let encryptAnother = m('a.button.greenBg.whiteText.hidden', null, 'Encrypt another Message')
   let showMessage = m('a.button.blueBg.whiteText.hidden', { onclick: decrypt, }, 'Show Message')
 
